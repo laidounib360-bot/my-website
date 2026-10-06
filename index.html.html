@@ -1,0 +1,1865 @@
+﻿
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizza House</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Tahoma,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+    color:#222;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+}
+
+.header{
+    background:#c62828;
+    color:white;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 10px #0003;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.header-buttons{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.lang-btn,.cart-btn,.seller-btn{
+    background:white;
+    color:#c62828;
+    padding:9px 14px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:25px auto;
+}
+
+.hero{
+    background:linear-gradient(135deg,#c62828,#ff7043);
+    color:white;
+    padding:35px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+.section-title{
+    margin:25px 0 15px;
+    color:#c62828;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 3px 12px #0001;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 7px 20px #0002;
+}
+
+.card img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:15px;
+}
+
+.card h3{
+    margin-bottom:8px;
+    color:#333;
+}
+
+.description{
+    color:#777;
+    min-height:40px;
+    font-size:14px;
+}
+
+.price{
+    color:#c62828;
+    font-size:20px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.add-btn{
+    width:100%;
+    background:#c62828;
+    color:white;
+    padding:11px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.add-btn:hover{
+    background:#a91f1f;
+}
+
+.cart-box{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-top:30px;
+    box-shadow:0 3px 12px #0001;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #eee;
+    padding:12px 0;
+    gap:10px;
+}
+
+.qty{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.qty button{
+    width:30px;
+    height:30px;
+    border-radius:6px;
+    background:#eee;
+}
+
+.total{
+    font-size:23px;
+    color:#c62828;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.checkout-btn{
+    background:#2e7d32;
+    color:white;
+    width:100%;
+    padding:14px;
+    margin-top:15px;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:25px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0008;
+    z-index:500;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modal-content{
+    background:white;
+    width:100%;
+    max-width:600px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:15px;
+    padding:25px;
+}
+
+.close{
+    float:left;
+    font-size:25px;
+    background:none;
+    color:#c62828;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #ddd;
+    border-radius:7px;
+}
+
+.primary{
+    background:#c62828;
+    color:white;
+    padding:11px 18px;
+    border-radius:7px;
+}
+
+.green{
+    background:#2e7d32;
+    color:white;
+    padding:10px 15px;
+    border-radius:7px;
+}
+
+.danger{
+    background:#d32f2f;
+    color:white;
+    padding:8px 12px;
+    border-radius:7px;
+}
+
+.admin{
+    display:none;
+}
+
+.admin-header{
+    background:#212121;
+    color:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.admin-tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.tab-btn{
+    background:#ddd;
+    padding:11px 16px;
+    border-radius:7px;
+}
+
+.tab-btn.active{
+    background:#c62828;
+    color:white;
+}
+
+.admin-section{
+    display:none;
+}
+
+.admin-section.active{
+    display:block;
+}
+
+.admin-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px #0001;
+}
+
+.order-card{
+    border-right:6px solid #c62828;
+}
+
+.order-head{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.status{
+    padding:7px 12px;
+    border-radius:20px;
+    font-weight:bold;
+    display:inline-block;
+}
+
+.status-new{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-preparing{
+    background:#cfe2ff;
+    color:#084298;
+}
+
+.status-ready{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.status-delivered{
+    background:#e2e3e5;
+    color:#41464b;
+}
+
+.status-cancelled{
+    background:#f8d7da;
+    color:#842029;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 2px 8px #0001;
+}
+
+.stat h3{
+    color:#777;
+    font-size:15px;
+}
+
+.stat p{
+    font-size:30px;
+    color:#c62828;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.product-admin{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    padding:12px;
+    border-bottom:1px solid #eee;
+    flex-wrap:wrap;
+}
+
+.product-admin img{
+    width:80px;
+    height:60px;
+    object-fit:cover;
+    border-radius:7px;
+}
+
+.actions{
+    margin-right:auto;
+    display:flex;
+    gap:7px;
+}
+
+.order-items{
+    margin:12px 0;
+    padding:12px;
+    background:#f8f8f8;
+    border-radius:8px;
+}
+
+.back-btn{
+    background:#555;
+    color:white;
+    padding:10px 15px;
+    border-radius:7px;
+    margin-bottom:15px;
+}
+
+.footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+}
+
+@media(max-width:600px){
+    .header{
+        padding:12px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .lang-btn,.cart-btn,.seller-btn{
+        padding:7px;
+        font-size:12px;
+    }
+
+    .hero{
+        padding:25px 15px;
+    }
+
+    .hero h1{
+        font-size:27px;
+    }
+
+    .cart-item{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+    <div class="logo">🍕 <span id="logoText">بيتزا هاوس</span></div>
+
+    <div class="header-buttons">
+        <button class="lang-btn" onclick="changeLanguage()" id="langBtn">Français</button>
+        <button class="cart-btn" onclick="scrollToCart()">
+            🛒 <span id="cartText">السلة</span>
+            (<span id="cartCount">0</span>)
+        </button>
+        <button class="seller-btn" onclick="openLogin()">🔐 البائع</button>
+    </div>
+</header>
+
+
+<!-- ================= CUSTOMER ================= -->
+
+<main id="customerPage">
+
+<div class="container">
+
+    <section class="hero">
+        <h1 id="heroTitle">🍕 مرحباً بكم في بيتزا هاوس</h1>
+        <p id="heroSubtitle">اختر بيتزاتك ومشروبك وأرسل طلبك بسهولة</p>
+    </section>
+
+
+    <h2 class="section-title" id="pizzaTitle">🍕 البيتزا</h2>
+    <div class="products" id="pizzaProducts"></div>
+
+
+    <h2 class="section-title" id="drinkTitle">🥤 المشروبات</h2>
+    <div class="products" id="drinkProducts"></div>
+
+
+    <!-- CART -->
+
+    <section class="cart-box" id="cartSection">
+
+        <h2 id="cartTitle">🛒 سلة الطلب</h2>
+
+        <div id="cartItems"></div>
+
+        <div class="total">
+            <span id="totalText">المجموع:</span>
+            <span id="cartTotal">0</span> دج
+        </div>
+
+        <button class="checkout-btn" onclick="openCheckout()">
+            ✅ <span id="checkoutText">تأكيد الطلب</span>
+        </button>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- ================= SELLER ================= -->
+
+<main class="admin" id="adminPage">
+
+<div class="container">
+
+    <div class="admin-header">
+        <h1>👨‍🍳 لوحة إدارة المطعم</h1>
+        <p>إدارة الطلبات والمنتجات والأسعار</p>
+    </div>
+
+    <div class="admin-tabs">
+
+        <button class="tab-btn active" onclick="showAdminTab('dashboard',this)">
+            📊 الإحصائيات
+        </button>
+
+        <button class="tab-btn" onclick="showAdminTab('orders',this)">
+            📦 الطلبات
+        </button>
+
+        <button class="tab-btn" onclick="showAdminTab('pizzas',this)">
+            🍕 البيتزا
+        </button>
+
+        <button class="tab-btn" onclick="showAdminTab('drinks',this)">
+            🥤 المشروبات
+        </button>
+
+        <button class="tab-btn" onclick="showCustomer()">
+            🏠 واجهة الزبون
+        </button>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <section class="admin-section active" id="dashboard">
+
+        <div class="stats">
+
+            <div class="stat">
+                <h3>كل الطلبات</h3>
+                <p id="statOrders">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>طلبات جديدة</h3>
+                <p id="statNew">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>قيد التحضير</h3>
+                <p id="statPreparing">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>إجمالي المبيعات</h3>
+                <p id="statSales">0</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ORDERS -->
+
+    <section class="admin-section" id="orders">
+
+        <div class="admin-card">
+
+            <h2>📦 الطلبات</h2>
+
+            <div id="ordersList"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PIZZAS -->
+
+    <section class="admin-section" id="pizzas">
+
+        <div class="admin-card">
+
+            <h2>🍕 إدارة البيتزا</h2>
+
+            <button class="primary" onclick="addProduct('pizza')">
+                ➕ إضافة بيتزا
+            </button>
+
+            <div id="pizzaAdminList"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DRINKS -->
+
+    <section class="admin-section" id="drinks">
+
+        <div class="admin-card">
+
+            <h2>🥤 إدارة المشروبات</h2>
+
+            <button class="primary" onclick="addProduct('drink')">
+                ➕ إضافة مشروب
+            </button>
+
+            <div id="drinkAdminList"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+
+
+<!-- ================= CHECKOUT MODAL ================= -->
+
+<div class="modal" id="checkoutModal">
+
+<div class="modal-content">
+
+<button class="close" onclick="closeModal('checkoutModal')">×</button>
+
+<h2>📝 معلومات الطلب</h2>
+
+<br>
+
+<div class="form-group">
+<label>الاسم</label>
+<input id="customerName" placeholder="اسم الزبون">
+</div>
+
+<div class="form-group">
+<label>رقم الهاتف</label>
+<input id="customerPhone" placeholder="05XXXXXXXX">
+</div>
+
+<div class="form-group">
+<label>العنوان</label>
+<textarea id="customerAddress" placeholder="عنوان التوصيل"></textarea>
+</div>
+
+<div class="form-group">
+<label>ملاحظات</label>
+<textarea id="customerNote" placeholder="مثال: بدون بصل"></textarea>
+</div>
+
+<div class="total">
+المجموع:
+<span id="checkoutTotal">0</span> دج
+</div>
+
+<button class="checkout-btn" onclick="placeOrder()">
+🚀 إرسال الطلب
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= ORDER SUCCESS ================= -->
+
+<div class="modal" id="successModal">
+
+<div class="modal-content" style="text-align:center">
+
+<h1>✅ تم إرسال الطلب</h1>
+
+<br>
+
+<p>رقم طلبك هو:</p>
+
+<h1 style="color:#c62828;font-size:45px" id="orderNumber"></h1>
+
+<p style="margin-top:15px">
+احتفظ برقم الطلب لمتابعته.
+</p>
+
+<br>
+
+<button class="primary" onclick="closeModal('successModal')">
+حسناً
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= LOGIN ================= -->
+
+<div class="modal" id="loginModal">
+
+<div class="modal-content">
+
+<button class="close" onclick="closeModal('loginModal')">×</button>
+
+<h2>🔐 دخول البائع</h2>
+
+<br>
+
+<div class="form-group">
+
+<label>اسم المستخدم</label>
+
+<input id="loginUser" value="admin">
+
+</div>
+
+<div class="form-group">
+
+<label>كلمة المرور</label>
+
+<input id="loginPass" type="password" value="1234">
+
+</div>
+
+<button class="checkout-btn" onclick="login()">
+دخول
+</button>
+
+<p style="margin-top:15px;color:#777">
+التجربة: admin / 1234
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================= PRODUCT MODAL ================= -->
+
+<div class="modal" id="productModal">
+
+<div class="modal-content">
+
+<button class="close" onclick="closeModal('productModal')">×</button>
+
+<h2 id="productModalTitle">إضافة منتج</h2>
+
+<br>
+
+<input type="hidden" id="editProductId">
+<input type="hidden" id="editProductType">
+
+<div class="form-group">
+<label>الاسم بالعربية</label>
+<input id="productNameAr">
+</div>
+
+<div class="form-group">
+<label>الاسم بالفرنسية</label>
+<input id="productNameFr">
+</div>
+
+<div class="form-group">
+<label>الوصف بالعربية</label>
+<textarea id="productDescAr"></textarea>
+</div>
+
+<div class="form-group">
+<label>الوصف بالفرنسية</label>
+<textarea id="productDescFr"></textarea>
+</div>
+
+<div class="form-group">
+<label>السعر بالدينار</label>
+<input id="productPrice" type="number">
+</div>
+
+<div class="form-group">
+<label>رابط الصورة</label>
+<input id="productImage" placeholder="https://...">
+</div>
+
+<button class="checkout-btn" onclick="saveProduct()">
+💾 حفظ المنتج
+</button>
+
+</div>
+
+</div>
+
+
+<footer class="footer">
+    🍕 Pizza House © 2026
+</footer>
+
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let currentLanguage = "ar";
+
+let cart = JSON.parse(localStorage.getItem("pizzaCart") || "[]");
+
+let orders = JSON.parse(localStorage.getItem("pizzaOrders") || "[]");
+
+let products = JSON.parse(localStorage.getItem("pizzaProducts") || "null");
+
+
+/* =========================================================
+   DEFAULT PRODUCTS
+========================================================= */
+
+if(!products){
+
+products = [
+
+{
+id:1,
+type:"pizza",
+nameAr:"بيتزا مارغريتا",
+nameFr:"Pizza Margherita",
+descAr:"صلصة طماطم، جبن موزاريلا",
+descFr:"Sauce tomate, mozzarella",
+price:700,
+image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600"
+},
+
+{
+id:2,
+type:"pizza",
+nameAr:"بيتزا فورماج",
+nameFr:"Pizza 4 Fromages",
+descAr:"مزيج من أربعة أنواع من الجبن",
+descFr:"Mélange de quatre fromages",
+price:900,
+image:"https://images.unsplash.com/photo-1579751626657-72bc17010498?w=600"
+},
+
+{
+id:3,
+type:"pizza",
+nameAr:"بيتزا دجاج",
+nameFr:"Pizza Poulet",
+descAr:"دجاج، جبن، صلصة خاصة",
+descFr:"Poulet, fromage, sauce spéciale",
+price:950,
+image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600"
+},
+
+{
+id:4,
+type:"pizza",
+nameAr:"بيتزا تونة",
+nameFr:"Pizza Thon",
+descAr:"تونة، جبن، زيتون",
+descFr:"Thon, fromage, olives",
+price:850,
+image:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600"
+},
+
+{
+id:5,
+type:"pizza",
+nameAr:"بيتزا لحم",
+nameFr:"Pizza Viande",
+descAr:"لحم مفروم، جبن، فلفل",
+descFr:"Viande hachée, fromage, poivrons",
+price:1000,
+image:"https://images.unsplash.com/photo-1593560708920-61dd98c8e2a6?w=600"
+},
+
+{
+id:6,
+type:"drink",
+nameAr:"كوكا كولا",
+nameFr:"Coca Cola",
+descAr:"علبة 33 سل",
+descFr:"Canette 33 cl",
+price:120,
+image:"https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=600"
+},
+
+{
+id:7,
+type:"drink",
+nameAr:"بيبسي",
+nameFr:"Pepsi",
+descAr:"علبة 33 سل",
+descFr:"Canette 33 cl",
+price:120,
+image:"https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=600"
+},
+
+{
+id:8,
+type:"drink",
+nameAr:"ماء",
+nameFr:"Eau",
+descAr:"قارورة ماء",
+descFr:"Bouteille d'eau",
+price:50,
+image:"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=600"
+}
+
+];
+
+localStorage.setItem("pizzaProducts",JSON.stringify(products));
+
+}
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+function changeLanguage(){
+
+currentLanguage = currentLanguage === "ar" ? "fr" : "ar";
+
+document.documentElement.lang = currentLanguage;
+
+document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+
+document.getElementById("langBtn").textContent =
+currentLanguage === "ar" ? "Français" : "العربية";
+
+if(currentLanguage === "ar"){
+
+document.getElementById("logoText").textContent="بيتزا هاوس";
+document.getElementById("heroTitle").textContent="🍕 مرحباً بكم في بيتزا هاوس";
+document.getElementById("heroSubtitle").textContent="اختر بيتزاتك ومشروبك وأرسل طلبك بسهولة";
+document.getElementById("pizzaTitle").textContent="🍕 البيتزا";
+document.getElementById("drinkTitle").textContent="🥤 المشروبات";
+document.getElementById("cartTitle").textContent="🛒 سلة الطلب";
+document.getElementById("totalText").textContent="المجموع:";
+document.getElementById("checkoutText").textContent="تأكيد الطلب";
+document.getElementById("cartText").textContent="السلة";
+
+}else{
+
+document.getElementById("logoText").textContent="Pizza House";
+document.getElementById("heroTitle").textContent="🍕 Bienvenue chez Pizza House";
+document.getElementById("heroSubtitle").textContent="Choisissez votre pizza et votre boisson";
+document.getElementById("pizzaTitle").textContent="🍕 Pizzas";
+document.getElementById("drinkTitle").textContent="🥤 Boissons";
+document.getElementById("cartTitle").textContent="🛒 Votre commande";
+document.getElementById("totalText").textContent="Total:";
+document.getElementById("checkoutText").textContent="Commander";
+document.getElementById("cartText").textContent="Panier";
+
+}
+
+renderProducts();
+
+renderCart();
+
+}
+
+
+/* =========================================================
+   PRODUCTS CUSTOMER
+========================================================= */
+
+function renderProducts(){
+
+let pizzas = products.filter(p=>p.type==="pizza");
+
+let drinks = products.filter(p=>p.type==="drink");
+
+document.getElementById("pizzaProducts").innerHTML =
+pizzas.map(productCard).join("");
+
+document.getElementById("drinkProducts").innerHTML =
+drinks.map(productCard).join("");
+
+}
+
+
+function productCard(p){
+
+let name = currentLanguage==="ar" ? p.nameAr : p.nameFr;
+
+let desc = currentLanguage==="ar" ? p.descAr : p.descFr;
+
+let addText = currentLanguage==="ar" ? "إضافة إلى السلة" : "Ajouter";
+
+return `
+
+<div class="card">
+
+<img src="${p.image}" onerror="this.src='https://via.placeholder.com/600x400?text=Pizza'">
+
+<div class="card-body">
+
+<h3>${name}</h3>
+
+<p class="description">${desc}</p>
+
+<div class="price">${p.price} دج</div>
+
+<button class="add-btn" onclick="addToCart(${p.id})">
+➕ ${addText}
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+function addToCart(id){
+
+let product = products.find(p=>p.id===id);
+
+if(!product)return;
+
+let existing = cart.find(x=>x.id===id);
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push({
+id:id,
+qty:1
+});
+
+}
+
+saveCart();
+
+renderCart();
+
+}
+
+
+function removeFromCart(id){
+
+cart = cart.filter(x=>x.id!==id);
+
+saveCart();
+
+renderCart();
+
+}
+
+
+function changeQty(id,change){
+
+let item = cart.find(x=>x.id===id);
+
+if(!item)return;
+
+item.qty += change;
+
+if(item.qty<=0){
+
+removeFromCart(id);
+
+return;
+
+}
+
+saveCart();
+
+renderCart();
+
+}
+
+
+function getTotal(){
+
+return cart.reduce((total,item)=>{
+
+let p = products.find(x=>x.id===item.id);
+
+return total + (p ? p.price * item.qty : 0);
+
+},0);
+
+}
+
+
+function renderCart(){
+
+let box = document.getElementById("cartItems");
+
+if(cart.length===0){
+
+box.innerHTML =
+`<div class="empty">
+🛒 ${currentLanguage==="ar" ? "السلة فارغة" : "Votre panier est vide"}
+</div>`;
+
+}else{
+
+box.innerHTML = cart.map(item=>{
+
+let p = products.find(x=>x.id===item.id);
+
+if(!p)return "";
+
+let name=currentLanguage==="ar"?p.nameAr:p.nameFr;
+
+return `
+
+<div class="cart-item">
+
+<div>
+<strong>${name}</strong>
+<br>
+<span>${p.price} دج</span>
+</div>
+
+<div class="qty">
+
+<button onclick="changeQty(${p.id},-1)">−</button>
+
+<strong>${item.qty}</strong>
+
+<button onclick="changeQty(${p.id},1)">+</button>
+
+<button class="danger" onclick="removeFromCart(${p.id})">×</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+document.getElementById("cartTotal").textContent=getTotal();
+
+document.getElementById("cartCount").textContent =
+cart.reduce((a,b)=>a+b.qty,0);
+
+document.getElementById("checkoutTotal").textContent=getTotal();
+
+}
+
+
+function saveCart(){
+
+localStorage.setItem("pizzaCart",JSON.stringify(cart));
+
+}
+
+
+function scrollToCart(){
+
+document.getElementById("cartSection").scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+function openCheckout(){
+
+if(cart.length===0){
+
+alert(currentLanguage==="ar" ?
+"السلة فارغة" :
+"Votre panier est vide");
+
+return;
+
+}
+
+document.getElementById("checkoutTotal").textContent=getTotal();
+
+document.getElementById("checkoutModal").style.display="flex";
+
+}
+
+
+function placeOrder(){
+
+let name=document.getElementById("customerName").value.trim();
+
+let phone=document.getElementById("customerPhone").value.trim();
+
+let address=document.getElementById("customerAddress").value.trim();
+
+let note=document.getElementById("customerNote").value.trim();
+
+if(!name || !phone || !address){
+
+alert("الرجاء إدخال الاسم والهاتف والعنوان");
+
+return;
+
+}
+
+
+let number = generateOrderNumber();
+
+let orderItems=cart.map(item=>{
+
+let p=products.find(x=>x.id===item.id);
+
+return {
+
+id:p.id,
+
+nameAr:p.nameAr,
+
+nameFr:p.nameFr,
+
+price:p.price,
+
+qty:item.qty
+
+};
+
+});
+
+
+let order={
+
+id:Date.now(),
+
+number:number,
+
+customer:{
+name:name,
+phone:phone,
+address:address,
+note:note
+},
+
+items:orderItems,
+
+total:getTotal(),
+
+status:"new",
+
+date:new Date().toLocaleString("ar-DZ")
+
+};
+
+
+orders.unshift(order);
+
+localStorage.setItem("pizzaOrders",JSON.stringify(orders));
+
+cart=[];
+
+saveCart();
+
+renderCart();
+
+closeModal("checkoutModal");
+
+document.getElementById("orderNumber").textContent=number;
+
+document.getElementById("successModal").style.display="flex";
+
+clearCheckout();
+
+updateDashboard();
+
+}
+
+
+function generateOrderNumber(){
+
+let n=Math.floor(1000+Math.random()*9000);
+
+return "PH-"+n;
+
+}
+
+
+function clearCheckout(){
+
+document.getElementById("customerName").value="";
+
+document.getElementById("customerPhone").value="";
+
+document.getElementById("customerAddress").value="";
+
+document.getElementById("customerNote").value="";
+
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function closeModal(id){
+
+document.getElementById(id).style.display="none";
+
+}
+
+
+/* =========================================================
+   SELLER LOGIN
+========================================================= */
+
+function openLogin(){
+
+document.getElementById("loginModal").style.display="flex";
+
+}
+
+
+function login(){
+
+let user=document.getElementById("loginUser").value;
+
+let pass=document.getElementById("loginPass").value;
+
+if(user==="admin" && pass==="1234"){
+
+closeModal("loginModal");
+
+document.getElementById("customerPage").style.display="none";
+
+document.getElementById("adminPage").style.display="block";
+
+updateDashboard();
+
+renderOrders();
+
+renderAdminProducts();
+
+}else{
+
+alert("اسم المستخدم أو كلمة المرور غير صحيحة");
+
+}
+
+}
+
+
+function showCustomer(){
+
+document.getElementById("adminPage").style.display="none";
+
+document.getElementById("customerPage").style.display="block";
+
+window.scrollTo(0,0);
+
+}
+
+
+function showAdminTab(id,button){
+
+document.querySelectorAll(".admin-section")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(id).classList.add("active");
+
+document.querySelectorAll(".tab-btn")
+.forEach(x=>x.classList.remove("active"));
+
+button.classList.add("active");
+
+if(id==="orders")renderOrders();
+
+if(id==="pizzas" || id==="drinks")renderAdminProducts();
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateDashboard(){
+
+orders=JSON.parse(localStorage.getItem("pizzaOrders")||"[]");
+
+document.getElementById("statOrders").textContent=orders.length;
+
+document.getElementById("statNew").textContent=
+orders.filter(x=>x.status==="new").length;
+
+document.getElementById("statPreparing").textContent=
+orders.filter(x=>x.status==="preparing").length;
+
+document.getElementById("statSales").textContent=
+orders
+.filter(x=>x.status!=="cancelled")
+.reduce((sum,x)=>sum+x.total,0)+" دج";
+
+}
+
+
+/* =========================================================
+   ORDERS ADMIN
+========================================================= */
+
+function renderOrders(){
+
+let box=document.getElementById("ordersList");
+
+orders=JSON.parse(localStorage.getItem("pizzaOrders")||"[]");
+
+if(orders.length===0){
+
+box.innerHTML=
+`<div class="empty">لا توجد طلبات حالياً</div>`;
+
+return;
+
+}
+
+box.innerHTML=orders.map(order=>{
+
+let statusText="";
+
+if(order.status==="new")statusText="جديد";
+
+if(order.status==="preparing")statusText="قيد التحضير";
+
+if(order.status==="ready")statusText="جاهز";
+
+if(order.status==="delivered")statusText="تم التسليم";
+
+if(order.status==="cancelled")statusText="ملغى";
+
+let items=order.items.map(item=>`
+
+<div>
+${item.nameAr} × ${item.qty}
+-
+${item.price*item.qty} دج
+</div>
+
+`).join("");
+
+return `
+
+<div class="admin-card order-card">
+
+<div class="order-head">
+
+<div>
+
+<h2>🧾 ${order.number}</h2>
+
+<p>${order.date}</p>
+
+</div>
+
+<div>
+
+<span class="status status-${order.status}">
+${statusText}
+</span>
+
+</div>
+
+</div>
+
+<hr>
+
+<br>
+
+<p><strong>الزبون:</strong> ${order.customer.name}</p>
+
+<p><strong>الهاتف:</strong> ${order.customer.phone}</p>
+
+<p><strong>العنوان:</strong> ${order.customer.address}</p>
+
+${order.customer.note ?
+`<p><strong>ملاحظات:</strong> ${order.customer.note}</p>` : ""}
+
+<div class="order-items">
+
+<strong>الطلب:</strong>
+
+${items}
+
+<hr>
+
+<br>
+
+<strong>المجموع: ${order.total} دج</strong>
+
+</div>
+
+<div>
+
+<label><strong>تغيير الحالة:</strong></label>
+
+<select onchange="changeOrderStatus(${order.id},this.value)"
+style="padding:10px;margin-top:7px">
+
+<option value="new" ${order.status==="new"?"selected":""}>
+جديد
+</option>
+
+<option value="preparing" ${order.status==="preparing"?"selected":""}>
+قيد التحضير
+</option>
+
+<option value="ready" ${order.status==="ready"?"selected":""}>
+جاهز
+</option>
+
+<option value="delivered" ${order.status==="delivered"?"selected":""}>
+تم التسليم
+</option>
+
+<option value="cancelled" ${order.status==="cancelled"?"selected":""}>
+ملغى
+</option>
+
+</select>
+
+<button class="danger" onclick="deleteOrder(${order.id})">
+حذف
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+function changeOrderStatus(id,status){
+
+let order=orders.find(x=>x.id===id);
+
+if(!order)return;
+
+order.status=status;
+
+localStorage.setItem("pizzaOrders",JSON.stringify(orders));
+
+renderOrders();
+
+updateDashboard();
+
+}
+
+
+function deleteOrder(id){
+
+if(!confirm("هل تريد حذف الطلب؟"))return;
+
+orders=orders.filter(x=>x.id!==id);
+
+localStorage.setItem("pizzaOrders",JSON.stringify(orders));
+
+renderOrders();
+
+updateDashboard();
+
+}
+
+
+/* =========================================================
+   ADMIN PRODUCTS
+========================================================= */
+
+function renderAdminProducts(){
+
+let pizzaBox=document.getElementById("pizzaAdminList");
+
+let drinkBox=document.getElementById("drinkAdminList");
+
+let pizzas=products.filter(p=>p.type==="pizza");
+
+let drinks=products.filter(p=>p.type==="drink");
+
+
+pizzaBox.innerHTML=pizzas.map(adminProductHTML).join("");
+
+drinkBox.innerHTML=drinks.map(adminProductHTML).join("");
+
+}
+
+
+function adminProductHTML(p){
+
+return `
+
+<div class="product-admin">
+
+<img src="${p.image}">
+
+<div>
+
+<strong>${p.nameAr}</strong>
+
+<br>
+
+<span>${p.nameFr}</span>
+
+<br>
+
+<strong style="color:#c62828">
+${p.price} دج
+</strong>
+
+</div>
+
+<div class="actions">
+
+<button class="green" onclick="editProduct(${p.id})">
+✏️ تعديل
+</button>
+
+<button class="danger" onclick="deleteProduct(${p.id})">
+🗑 حذف
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   ADD / EDIT PRODUCT
+========================================================= */
+
+function addProduct(type){
+
+document.getElementById("editProductId").value="";
+
+document.getElementById("editProductType").value=type;
+
+document.getElementById("productNameAr").value="";
+
+document.getElementById("productNameFr").value="";
+
+document.getElementById("productDescAr").value="";
+
+document.getElementById("productDescFr").value="";
+
+document.getElementById("productPrice").value="";
+
+document.getElementById("productImage").value="";
+
+document.getElementById("productModalTitle").textContent=
+type==="pizza" ? "إضافة بيتزا" : "إضافة مشروب";
+
+document.getElementById("productModal").style.display="flex";
+
+}
+
+
+function editProduct(id){
+
+let p=products.find(x=>x.id===id);
+
+if(!p)return;
+
+document.getElementById("editProductId").value=p.id;
+
+document.getElementById("editProductType").value=p.type;
+
+document.getElementById("productNameAr").value=p.nameAr;
+
+document.getElementById("productNameFr").value=p.nameFr;
+
+document.getElementById("productDescAr").value=p.descAr;
+
+document.getElementById("productDescFr").value=p.descFr;
+
+document.getElementById("productPrice").value=p.price;
+
+document.getElementById("productImage").value=p.image;
+
+document.getElementById("productModalTitle").textContent="تعديل المنتج";
+
+document.getElementById("productModal").style.display="flex";
+
+}
+
+
+function saveProduct(){
+
+let id=document.getElementById("editProductId").value;
+
+let type=document.getElementById("editProductType").value;
+
+let nameAr=document.getElementById("productNameAr").value.trim();
+
+let nameFr=document.getElementById("productNameFr").value.trim();
+
+let descAr=document.getElementById("productDescAr").value.trim();
+
+let descFr=document.getElementById("productDescFr").value.trim();
+
+let price=Number(document.getElementById("productPrice").value);
+
+let image=document.getElementById("productImage").value.trim();
+
+
+if(!nameAr || !nameFr || !price){
+
+alert("الرجاء إدخال الاسم والسعر");
+
+return;
+
+}
+
+
+if(id){
+
+let p=products.find(x=>x.id==id);
+
+p.nameAr=nameAr;
+
+p.nameFr=nameFr;
+
+p.descAr=descAr;
+
+p.descFr=descFr;
+
+p.price=price;
+
+p.image=image || "https://via.placeholder.com/600x400?text=Pizza";
+
+}else{
+
+products.push({
+
+id:Date.now(),
+
+type:type,
+
+nameAr:nameAr,
+
+nameFr:nameFr,
+
+descAr:descAr,
+
+descFr:descFr,
+
+price:price,
+
+image:image || "https://via.placeholder.com/600x400?text=Pizza"
+
+});
+
+}
+
+
+localStorage.setItem("pizzaProducts",JSON.stringify(products));
+
+closeModal("productModal");
+
+renderProducts();
+
+renderAdminProducts();
+
+alert("تم حفظ المنتج بنجاح");
+
+}
+
+
+function deleteProduct(id){
+
+let p=products.find(x=>x.id===id);
+
+if(!p)return;
+
+if(!confirm("هل تريد حذف "+p.nameAr+" ؟"))return;
+
+products=products.filter(x=>x.id!==id);
+
+localStorage.setItem("pizzaProducts",JSON.stringify(products));
+
+renderProducts();
+
+renderAdminProducts();
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderProducts();
+
+renderCart();
+
+updateDashboard();
+
+
+/* =========================================================
+   AUTO REFRESH ORDERS
+========================================================= */
+
+setInterval(()=>{
+
+orders=JSON.parse(localStorage.getItem("pizzaOrders")||"[]");
+
+if(document.getElementById("adminPage").style.display==="block"){
+
+renderOrders();
+
+updateDashboard();
+
+}
+
+},3000);
+
+</script>
+
+</body>
+</html>
